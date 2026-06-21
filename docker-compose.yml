@@ -1,1 +1,67 @@
+services:
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: bookstore_user
+      POSTGRES_PASSWORD: mun
+      POSTGRES_DB: bookstore
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
 
+  kafka:
+    image: confluentinc/cp-kafka:7.6.0
+    hostname: kafka
+    container_name: kafka
+
+    ports:
+      - "9092:9092"
+
+    environment:
+      CLUSTER_ID: MkU3OEVBNTcwNTJENDM2Qk
+
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:29093
+
+      KAFKA_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:29093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    
+    healthcheck:
+      test: ["CMD", "bash", "-c", "cub kafka-ready -b kafka:9092 1 20"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_started
+      kafka:
+        condition: service_healthy
+  
+  consumer:
+    build:
+      context: .
+    command: python -m backend.data.kafka.consumer
+    depends_on:
+      db:
+        condition: service_started
+      kafka:
+        condition: service_healthy
+    
+volumes:
+  postgres_data:
+    name: bookstore_postgres_data
