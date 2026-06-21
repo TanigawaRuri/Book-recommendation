@@ -71,21 +71,63 @@ All services can be started with Docker Compose.
 <img width="1231" height="631" alt="image" src="https://github.com/user-attachments/assets/e08abfb9-4da8-456d-b072-81e2deac698b" />
 
 
+## Database Design
+
 ### Users
 
-Stores user account information.
+Stores user account information and authentication data.
+
+| Column        | Description                  |
+| ------------- | ---------------------------- |
+| id            | Unique user identifier       |
+| email         | User email address           |
+| password_hash | Hashed password using bcrypt |
+
+Used for authentication and personalization.
+
+---
 
 ### Books
 
-Stores imported book metadata.
+Stores book metadata imported from the Narou API.
+
+| Column   | Description            |
+| -------- | ---------------------- |
+| id       | Unique book identifier |
+| title    | Book title             |
+| genre    | Book genre             |
+| author   | Author name            |
+| ncode | Book ncode       |
+
+Acts as the primary catalog for recommendation and search operations.
+
+---
 
 ### Recommendations
 
-Stores personalized recommendation rankings.
+Stores personalized recommendation rankings for each user.
 
-### Analytics
+| Column  | Description             |
+| ------- | ----------------------- |
+| user_id | Target user             |
+| book_id | Recommended book        |
+| rank    | Recommendation priority |
 
-Stores aggregated interaction statistics.
+Queried by the recommendation API to serve personalized book suggestions.
+
+---
+
+### GenreAnalytics
+
+Stores aggregated user interaction statistics by genre.
+
+| Column         | Description         |
+| -------------- | ------------------- |
+| genre          | Book genre          |
+| click_count    | Number of clicks    |
+| purchase_count | Number of purchases |
+
+Used to track user engagement trends and support recommendation logic.
 
 ---
 
@@ -149,15 +191,18 @@ http://localhost:8000/docs
 
 ### Login
 
-[Insert Screenshot]
+<img width="450" height="592" alt="image" src="https://github.com/user-attachments/assets/476071e1-ef9b-416e-8b84-7238b841a717" />
+
 
 ### Recommendation Page
 
-[Insert Screenshot]
+<img width="891" height="499" alt="image" src="https://github.com/user-attachments/assets/9347d030-8553-4240-8633-11cb55ad16de" />
+
 
 ### Swagger API Documentation
 
-[Insert Screenshot]
+<img width="439" height="582" alt="image" src="https://github.com/user-attachments/assets/64bb7e5b-7a55-4e90-8c99-c9848090fd1b" />
+
 
 ---
 
