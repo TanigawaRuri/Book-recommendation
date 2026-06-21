@@ -12,37 +12,8 @@ The goal of the project is to demonstrate practical Data Engineering concepts in
 
 ## Architecture
 
-```text
-Narou API
-    │
-    ▼
-Book Import Pipeline
-    │
-    ▼
-PostgreSQL
- ┌──────────────────┐
- │ Users            │
- │ Books            │
- │ Recommendations  │
- │ Analytics        │
- └──────────────────┘
-          ▲
-          │
-       FastAPI
-          │
-          ▼
-      User Events
-          │
-          ▼
-        Kafka
-          │
-          ▼
-       Consumer
-      ├─────────────► Analytics Update
-      └─────────────► Recommendation Update
-```
+<img width="690" height="800" alt="data_engineer_portfolio_architecture" src="https://github.com/user-attachments/assets/0f5515ac-7906-4a33-b6b8-1de45e7b43a1" />
 
----
 
 ## Features
 
@@ -95,9 +66,10 @@ All services can be started with Docker Compose.
 
 ---
 
-## Database Design
+## ERD
 
-Core tables:
+<img width="1231" height="631" alt="image" src="https://github.com/user-attachments/assets/e08abfb9-4da8-456d-b072-81e2deac698b" />
+
 
 ### Users
 
@@ -114,34 +86,6 @@ Stores personalized recommendation rankings.
 ### Analytics
 
 Stores aggregated interaction statistics.
-
----
-
-## Data Flow
-
-### Purchase Event Pipeline
-
-```text
-User Purchase
-      │
-      ▼
-FastAPI Endpoint
-      │
-      ▼
-Kafka Producer
-      │
-      ▼
-Kafka Topic
-      │
-      ▼
-Kafka Consumer
-      │
-      ├────► Analytics Update
-      │
-      └────► Recommendation Update
-```
-
-This design decouples API requests from downstream processing and allows analytics and recommendation logic to scale independently.
 
 ---
 
@@ -229,8 +173,6 @@ http://localhost:8000/docs
 ---
 
 ## Learning Outcomes
-
-Through this project I gained experience with:
 
 * Event-driven architectures
 * Kafka producers and consumers
