@@ -179,12 +179,6 @@ docker compose up --build
 
 ### API Documentation
 
-Swagger UI:
-
-```text
-http://localhost:8000/docs
-```
-
 ---
 
 ## Screenshots
