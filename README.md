@@ -226,6 +226,3 @@ http://localhost:8000/docs
 * API development using FastAPI
 * Asynchronous data processing
 * Recommendation system implementation
-
-```
-```
